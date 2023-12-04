@@ -32,25 +32,22 @@ fun sumCalibrationValuesPart2(lines: List<String>): Int {
 		var firstDigit: Int? = null
 		var lastDigit: Int? = null
 
-		// Check for spelled-out digits
-		wordToDigit.forEach { (word, digit) ->
-			if (this.contains(word)) {
+		for (i in indices) {
+			// Check for spelled-out digits
+			if (this[i].isDigit()) {
+				val digit = this[i].toString().toInt()
 				if (firstDigit == null) firstDigit = digit
 				lastDigit = digit
-			}
-		}
-
-		// Check for numeric digits if no spelled-out digit is found
-		if (firstDigit == null || lastDigit == null) {
-			this.forEach { char ->
-				if (char.isDigit()) {
-					val digit = char.toString().toInt()
+			} else {
+				// Check to see if the start of one of the words in wordToDigit
+				val spelledOutDigits = wordToDigit.keys.find { this.substring(i).startsWith(it) }
+				if (spelledOutDigits != null) {
+					val digit = wordToDigit[spelledOutDigits]!!
 					if (firstDigit == null) firstDigit = digit
 					lastDigit = digit
 				}
 			}
 		}
-
 		return firstDigit to lastDigit
 	}
 
